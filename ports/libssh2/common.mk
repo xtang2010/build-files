@@ -52,16 +52,9 @@ CFLAGS += $(FLAGS) -I$(QNX_TARGET)/$(CPUVARDIR)/$(PREFIX)/include \
                    -I$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)/$(PREFIX)/include \
                    -D_QNX_SOURCE
 
-ifeq ($(filter so a , $(VARIANT_LIST)), so)
 BUILD_SHARED_LIBS := ON
 BUILD_STATIC_LIBS := OFF
-else
-BUILD_SHARED_LIBS := OFF
-BUILD_STATIC_LIBS := OFF
-endif
 BUILD_TESTING ?= OFF
-KKK := $(CPU)
-PPP := $(CPUVARDIR)
 
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
              -DCMAKE_SYSTEM_PROCESSOR=$(CPUVARDIR) \
@@ -86,4 +79,4 @@ $(NAME)_all: apply-patch
 	@cd build && cmake --build .
 
 TARGET_INSTALL=@cd build && make VERBOSE=1 install $(MAKE_ARGS)
-EXTRA_ICLEAN=-rf build
+EXTRA_ICLEAN=-rf build ../patch_backups ../.patch*

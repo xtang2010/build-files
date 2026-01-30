@@ -10,8 +10,8 @@ QNX_PROJECT_ROOT ?= $(shell readlink -f $(PROJECT_ROOT)/../../../$(NAME))
 
 #install into stage
 QNX_BASE:=$(notdir $(shell readlink -f $(QNX_HOST)/../../../))
-INSTALL_ROOT_nto = /usr/local/stage/$(QNX_BASE)
-IFTOP_INSTALL_ROOT ?= /usr/local/stage/$(NAME)/$(QNX_BASE)
+INSTALL_ROOT_nto = /usr/local/stage
+IFTOP_INSTALL_ROOT ?= $(INSTALL_ROOT_$(OS))/$(NAME)/$(QNX_BASE)
 
 #PREFIX ?= /usr/local
 

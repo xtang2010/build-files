@@ -1,0 +1,84 @@
+diff --git a/example/direct_tcpip.c b/example/direct_tcpip.c
+index 67a188d5..5be49543 100644
+--- a/example/direct_tcpip.c
++++ b/example/direct_tcpip.c
+@@ -24,6 +24,9 @@
+ #ifdef HAVE_ARPA_INET_H
+ #include <arpa/inet.h>
+ #endif
++#ifdef HAVE_SYS_TIME_H
++#include <sys/time.h>
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/example/ssh2_agent_forwarding.c b/example/ssh2_agent_forwarding.c
+index 789d116a..fbb163cf 100644
+--- a/example/ssh2_agent_forwarding.c
++++ b/example/ssh2_agent_forwarding.c
+@@ -28,6 +28,9 @@
+ #ifdef HAVE_ARPA_INET_H
+ #include <arpa/inet.h>
+ #endif
++#ifdef HAVE_SYS_TIME_H
++#include <sys/time.h>
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/example/ssh2_echo.c b/example/ssh2_echo.c
+index ff5b1c58..8da80da0 100644
+--- a/example/ssh2_echo.c
++++ b/example/ssh2_echo.c
+@@ -23,6 +23,9 @@
+ #ifdef HAVE_ARPA_INET_H
+ #include <arpa/inet.h>
+ #endif
++#ifdef HAVE_SYS_TIME_H
++#include <sys/time.h>
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/example/ssh2_exec.c b/example/ssh2_exec.c
+index 62c3468a..f6c36a30 100644
+--- a/example/ssh2_exec.c
++++ b/example/ssh2_exec.c
+@@ -25,6 +25,9 @@
+ #ifdef HAVE_ARPA_INET_H
+ #include <arpa/inet.h>
+ #endif
++#ifdef HAVE_SYS_TIME_H
++#include <sys/time.h>
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/example/tcpip-forward.c b/example/tcpip-forward.c
+index 62d94997..2d35daf5 100644
+--- a/example/tcpip-forward.c
++++ b/example/tcpip-forward.c
+@@ -24,6 +24,9 @@
+ #ifdef HAVE_ARPA_INET_H
+ #include <arpa/inet.h>
+ #endif
++#ifdef HAVE_SYS_TIME_H
++#include <sys/time.h>
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/example/x11.c b/example/x11.c
+index 8f7d99ed..f84e3b87 100644
+--- a/example/x11.c
++++ b/example/x11.c
+@@ -32,6 +32,9 @@
+ #ifdef HAVE_SYS_UN_H
+ #include <sys/un.h>
+ #endif
++#ifdef HAVE_SYS_TIME_H
++#include <sys/time.h>
++#endif
+ 
+ #include <stdlib.h>
+ #include <string.h>

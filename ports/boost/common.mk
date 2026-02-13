@@ -14,7 +14,9 @@ BOOST_VARIANT ?= release
 #by default, unless it was manually re-routed to
 #a staging area by setting both INSTALL_ROOT_nto
 #and USE_INSTALL_ROOT
-BOOST_INSTALL_ROOT ?= $(shell readlink -f $(QNX_PROJECT_ROOT)/../stage)
+INSTALL_ROOT_nto = /usr/local/stage
+QNX_BASE:=$(shell readlink -f $(QNX_HOST)/../../../)
+BOOST_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
 
 #A prefix path to use **on the target**. This is
 #different from INSTALL_ROOT, which refers to a

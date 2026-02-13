@@ -13,7 +13,7 @@ QNX_BASE:=$(notdir $(shell readlink -f $(QNX_HOST)/../../../))
 INSTALL_ROOT_nto = /usr/local/stage
 IFTOP_INSTALL_ROOT ?= $(INSTALL_ROOT_$(OS))/$(NAME)/$(QNX_BASE)
 
-#PREFIX ?= /usr/local
+PREFIX ?= /usr/local
 
 #choose Release or Debug
 CMAKE_BUILD_TYPE ?= RelWithDebInfo
@@ -38,8 +38,8 @@ export PKG_CONFIG_LIBDIR = $(PKG_CONFIG_LIBDIR_IN):$(PKG_CONFIG_TARGET_IN)
 #Config toolchain for qnx
 CONFIGURE_CMD = $(QNX_PROJECT_ROOT)/configure
 CONFIGURE_ARGS = --host=$(CPU)-*-$(OS) \
-                 --prefix=$(IFTOP_INSTALL_ROOT)/$(PREFIX)/$(CPUVARDIR) \
-                 --exec-prefix=$(IFTOP_INSTALL_ROOT)/$(CPUVARDIR) \
+                 --prefix=$(IFTOP_INSTALL_ROOT)/$(PREFIX) \
+                 --exec-prefix=$(IFTOP_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
                  --srcdir=$(QNX_PROJECT_ROOT) 
 CONFIGURE_ENVS = CFLAGS="$(CFLAGS)" \
                  CXXFLAGS="$(CXXFLAGS)" \

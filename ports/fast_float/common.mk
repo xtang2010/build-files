@@ -9,8 +9,9 @@ NAME=fast_float
 QNX_PROJECT_ROOT ?= $(shell readlink -f $(PROJECT_ROOT)/../../../$(NAME))
 
 #install into stage
-INSTALL_ROOT_nto = $(shell readlink -f $(QNX_PROJECT_ROOT)/../stage)
-FASTFLOAT_INSTALL_ROOT ?= $(INSTALL_ROOT_$(OS))/../stage_$(NAME)
+QNX_BASE:=$(shell readlink -f $(QNX_HOST)/../../../)
+INSTALL_ROOT_nto = /usr/local/stage
+FASTFLOAT_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
 
 PREFIX ?= /usr/local
 
@@ -26,16 +27,12 @@ include $(MKFILES_ROOT)/qtargets.mk
 #CMake env
 CMAKE_FIND_ROOT_PATH := $(QNX_TARGET);$(QNX_TARGET)/$(CPUVARDIR);$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)/$(PREFIX)
 CMAKE_MODULE_PATH := $(QNX_TARGET)/$(CPUVARDIR)/$(PREFIX)/lib/cmake;$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)/$(PREFIX)/lib/cmake
-#CMAKE_MODULE_EXTRA := -DDOUBLE_CONVERSION_INCLUDE_DIR=$(INSTALL_ROOT_$(OS))/$(PREFIX)/include \
-                      -DDOUBLE_CONVERSION_LIBRARY=$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)$(PREFIX)/lib/
 
 CFLAGS += $(FLAGS) -I$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)/$(PREFIX)/include \
                    -D_QNX_SOURCE
-#LDFLAGS += -lgomp -lsocket -lc++
 
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
-             -DCMAKE_SYSTEM_PROCESSOR=$(CPUVARDIR) \
-             -DCPU=${CPU} \
+             -DCMAKE_SYSTEM_PROCESSOR=$(CPU) \
              -DCMAKE_INSTALL_PREFIX=$(FASTFLOAT_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
              -DCMAKE_INSTALL_INCLUDEDIR=$(FASTFLOAT_INSTALL_ROOT)/$(PREFIX)/include \
              -DCMAKE_FIND_ROOT_PATH="$(CMAKE_FIND_ROOT_PATH)" \
@@ -50,7 +47,7 @@ MAKE_ARGS ?= -j $(firstword $(JLEVEL) 4)
 
 $(NAME)_all: 
 	@mkdir -p build
-	cd build && cmake $(CMAKE_ARGS) $(QNX_PROJECT_ROOT)
+	cd build && cmake $(CMAKE_ARGS) $(QNX_PROJECT_ROOT) 
 	cd build && make all $(MAKE_ARGS)
 
 TARGET_INSTALL=@cd build && make VERBOSE=1 install $(MAKE_ARGS)

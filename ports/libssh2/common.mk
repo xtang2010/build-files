@@ -19,7 +19,7 @@ LIBSSH2_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
 #This prefix path may be exposed to the source code,
 #the linker, or package discovery config files (.pc,
 #CMake config modules, etc.). Default is /usr/local
-#PREFIX ?= /usr/local
+PREFIX ?= /usr/local
 
 #choose Release or Debug
 CMAKE_BUILD_TYPE ?= Release
@@ -59,7 +59,7 @@ BUILD_TESTING ?= OFF
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
              -DCMAKE_SYSTEM_PROCESSOR=$(CPUVARDIR) \
              -DCMAKE_INSTALL_PREFIX=$(LIBSSH2_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
-             -DCMAKE_INSTALL_INCLUDEDIR=$(LIBSSH2_INSTALL_ROOT)/$(PREFIX)/usr/include \
+             -DCMAKE_INSTALL_INCLUDEDIR=$(LIBSSH2_INSTALL_ROOT)/$(PREFIX)/include \
              -DCMAKE_FIND_ROOT_PATH="$(CMAKE_FIND_ROOT_PATH)" \
              -DCMAKE_MODULE_PATH="$(CMAKE_MODULE_PATH)" \
              -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \

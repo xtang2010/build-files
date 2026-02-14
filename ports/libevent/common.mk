@@ -7,6 +7,10 @@ NAME=libevent
 
 QNX_PROJECT_ROOT ?= $(PRODUCT_ROOT)/../../libevent
 
+#install into stage
+QNX_BASE:=$(notdir $(shell readlink -f $(QNX_HOST)/../../../))
+INSTALL_ROOT_nto = /usr/local/stage/$(NAME)/$(QNX_BASE)
+
 #$(INSTALL_ROOT_$(OS)) is pointing to $QNX_TARGET
 #by default, unless it was manually re-routed to
 #a staging area by setting both INSTALL_ROOT_nto
@@ -48,7 +52,8 @@ CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
              -DEXTRA_CMAKE_CXX_FLAGS="$(CXXFLAGS)" \
              -DEXTRA_CMAKE_ASM_FLAGS="$(FLAGS)" \
              -DEXTRA_CMAKE_LINKER_FLAGS="$(LDFLAGS)" \
-             -DEVENT__DISABLE_OPENSSL=ON
+             -DEVENT__DISABLE_OPENSSL=ON \
+	     -DEVENT__HAVE_SIGACTION=OFF
 
 ifndef NO_TARGET_OVERRIDE
 libevent_all:

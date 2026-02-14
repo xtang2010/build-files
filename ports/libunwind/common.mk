@@ -34,8 +34,7 @@ include $(MKFILES_ROOT)/qtargets.mk
 #Config toolchain for qnx
 CONFIGURE_CMD = $(QNX_PROJECT_ROOT)/configure 
 CONFIGURE_ARGS = --host=$(CPU)-pc-$(OS) \
-		 --prefix=$($(NAME)_INSTALL_ROOT)/$(PREFIX) \
-		 --exec-prefix=$($(NAME)_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
+		 --prefix=$($(NAME)_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
                  --srcdir=$(QNX_PROJECT_ROOT) \
 		 --disable-tests
 CONFIGURE_ENVS = CFLAGS="$(CFLAGS)" \

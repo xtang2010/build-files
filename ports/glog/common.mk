@@ -6,6 +6,9 @@ include $(QCONFIG)
 NAME=glog
 
 QNX_PROJECT_ROOT=$(PRODUCT_ROOT)/../../$(NAME)
+#install into stage
+QNX_BASE:=$(notdir $(shell readlink -f $(QNX_HOST)/../../../))
+INSTALL_ROOT_nto = /usr/local/stage/$(QNX_BASE)
 
 PREFIX ?= usr/local
 
@@ -30,11 +33,23 @@ CFLAGS += -I$(INSTALL_ROOT)/$(PREFIX)/include
 
 BUILD_TESTING ?= OFF
 
+#Search paths for all of CMake's find_* functions --
+#headers, libraries, etc.
+#
+#$(QNX_TARGET): for architecture-agnostic files shipped with SDP (e.g. headers)
+#$(QNX_TARGET)/$(CPUVARDIR): for architecture-specific files in SDP
+#$(INSTALL_ROOT)/$(CPUVARDIR): any packages that may have been installed in the staging area
+CMAKE_FIND_ROOT_PATH := $(QNX_TARGET);$(QNX_TARGET)/$(CPUVARDIR);$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)
+
+#Path to CMake modules; These are CMake files installed by other packages
+#for downstreams to discover them automatically. We support discovering
+#CMake-based packages from inside SDP or in the staging area.
+#Note that CMake modules can automatically detect the prefix they are
+#installed in.
+CMAKE_MODULE_PATH := $(QNX_TARGET)/$(CPUVARDIR)/$(PREFIX)/lib/cmake;$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)/$(PREFIX)/lib/cmake
+
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
-             -DCMAKE_INSTALL_PREFIX="$(INSTALL_ROOT)" \
-             -DCMAKE_INSTALL_LIBDIR="$(CPUVARDIR)/$(PREFIX)/lib" \
-             -DCMAKE_INSTALL_BINDIR="$(CPUVARDIR)/$(PREFIX)/bin" \
-             -DCMAKE_INSTALL_INCLUDEDIR="$(PREFIX)/include" \
+             -DCMAKE_INSTALL_PREFIX="$(INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX)" \
              -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \
              -DCMAKE_SYSTEM_PROCESSOR=$(CPUVARDIR) \
              -DEXTRA_CMAKE_C_FLAGS="$(CFLAGS)" \

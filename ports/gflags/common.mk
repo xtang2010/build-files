@@ -7,6 +7,11 @@ NAME=gflags
 
 QNX_PROJECT_ROOT=$(PRODUCT_ROOT)/../../$(NAME)
 
+#install into stage
+QNX_BASE:=$(notdir $(shell readlink -f $(QNX_HOST)/../../../))
+INSTALL_ROOT_nto = /usr/local/stage/$(QNX_BASE)
+USE_INSTALL_ROOT=1
+
 PREFIX ?= /usr/local
 
 #$(INSTALL_ROOT_$(OS)) is pointing to $QNX_TARGET

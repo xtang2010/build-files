@@ -43,8 +43,7 @@ B2_EXTRA_OPTS ?=
 B2_OPTIONS = -q -d2 \
              ${B2_MODULES} \
              --build-type=minimal target-os=qnxnto toolset=qcc \
-             --prefix=$(BOOST_INSTALL_ROOT)/$(PREFIX) --includedir=$(BOOST_INSTALL_ROOT)/$(PREFIX)/include \
-             --libdir=$(BOOST_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX)/lib \
+             --prefix=$(BOOST_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
              --user-config=$(PROJECT_ROOT)/$(PYTHON_USER_CONFIG) \
              runtime-link=shared link=shared variant=$(BOOST_VARIANT) define=BOOST_SYSTEM_NO_DEPRECATED \
              ${B2_EXTRA_OPTS}

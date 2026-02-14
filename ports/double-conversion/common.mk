@@ -11,7 +11,7 @@ QNX_PROJECT_ROOT ?= $(shell readlink -f $(PROJECT_ROOT)/../../../$(NAME))
 #install into stage
 INSTALL_ROOT_nto = /usr/local/stage
 QNX_BASE:=$(shell readlink -f $(QNX_HOST)/../../../)
-DOUBLE_CONVERSIOON_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
+$(NAME)_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
 
 #A prefix path to use **on the target**. This is
 #different from INSTALL_ROOT, which refers to a
@@ -61,9 +61,8 @@ BUILD_TESTING ?= OFF
 
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
              -DCMAKE_SYSTEM_PROCESSOR=$(CPUVARDIR) \
-             -DCPU=${CPU} \
-             -DCMAKE_INSTALL_PREFIX=$(DOUBLE_CONVERSIOON_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
-             -DCMAKE_INSTALL_INCLUDEDIR=$(DOUBLE_CONVERSIOON_INSTALL_ROOT)/$(PREFIX)/include \
+	     -DCPU=$(CPU) \
+             -DCMAKE_INSTALL_PREFIX=$($(NAME)_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
              -DCMAKE_FIND_ROOT_PATH="$(CMAKE_FIND_ROOT_PATH)" \
              -DCMAKE_MODULE_PATH="$(CMAKE_MODULE_PATH)" \
              -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \

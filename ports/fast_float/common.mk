@@ -11,7 +11,7 @@ QNX_PROJECT_ROOT ?= $(shell readlink -f $(PROJECT_ROOT)/../../../$(NAME))
 #install into stage
 QNX_BASE:=$(shell readlink -f $(QNX_HOST)/../../../)
 INSTALL_ROOT_nto = /usr/local/stage
-FASTFLOAT_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
+$(NAME)_INSTALL_ROOT ?= $(INSTALL_ROOT_nto)/$(NAME)/$(notdir $(QNX_BASE))
 
 PREFIX ?= /usr/local
 
@@ -33,8 +33,7 @@ CFLAGS += $(FLAGS) -I$(INSTALL_ROOT_$(OS))/$(CPUVARDIR)/$(PREFIX)/include \
 
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
              -DCMAKE_SYSTEM_PROCESSOR=$(CPU) \
-             -DCMAKE_INSTALL_PREFIX=$(FASTFLOAT_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
-             -DCMAKE_INSTALL_INCLUDEDIR=$(FASTFLOAT_INSTALL_ROOT)/$(PREFIX)/include \
+             -DCMAKE_INSTALL_PREFIX=$($(NAME)_INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
              -DCMAKE_FIND_ROOT_PATH="$(CMAKE_FIND_ROOT_PATH)" \
              -DCMAKE_MODULE_PATH="$(CMAKE_MODULE_PATH)" \
              -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \

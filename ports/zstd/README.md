@@ -1,3 +1,5 @@
+# zstd 
+
 # Compile the port for QNX
 
 **Note**: QNX ports are only supported from a **Linux host** operating system
@@ -26,12 +28,11 @@ source ~/qnx800/qnxsdp-env.sh
 cd ~/qnx_workspace
 
 # Clone zstd
-git clone -b v1.5.6 https://github.com/facebook/zstd.git
+git clone -b v1.5.7 https://github.com/facebook/zstd.git
 
 # Build zstd
-make -C build-files/ports/zstd install JLEVEL=4
-# If zstd source is present at a different location
-QNX_PROJECT_ROOT=<path-to-source> make -C build-files/ports/zstd install JLEVEL=4
+cd ~/qnx_workspace/build-files/ports/zstd
+make install
 ```
 
 # Compile the port for QNX on Ubuntu host
@@ -40,16 +41,15 @@ QNX_PROJECT_ROOT=<path-to-source> make -C build-files/ports/zstd install JLEVEL=
 # Clone the repos
 mkdir -p ~/qnx_workspace && cd qnx_workspace
 git clone https://github.com/qnx-ports/build-files.git
-git clone -b v1.5.6 https://github.com/facebook/zstd.git
+git clone -b v1.5.7 https://github.com/facebook/zstd.git
 
 # Source SDP environment
 source ~/qnx800/qnxsdp-env.sh
 cd ~/qnx_workspace
 
 # Build zstd
-make -C build-files/ports/zstd install JLEVEL=4
-# If zstd source is present at a different location
-QNX_PROJECT_ROOT=<path-to-source> make -C build-files/ports/zstd install JLEVEL=4
+cd ~/qnx_workspace/build-files/ports/zstd
+make install
 ```
 
 # Zstandard library : usage examples

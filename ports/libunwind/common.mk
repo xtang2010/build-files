@@ -47,9 +47,6 @@ CONFIGURE_ENVS = CFLAGS="$(CFLAGS)" \
 		 AS="${QNX_HOST}/usr/bin/qcc -Vgcc_$(OS)$(CPUVARDIR)" \
                  RANDLIB="${QNX_HOST}/usr/bin/$(OS)$(CPU)-ranlib" 
 
-CCCC:=$(CPU)
-KKKK:=$(CPUVARDIR)
-
 MAKE_ARGS ?= -j $(firstword $(JLEVEL) 4)
 
 $(CONFIGURE_CMD):

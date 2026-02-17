@@ -27,11 +27,11 @@ cd build-files/docker
 source ~/qnx800/qnxsdp-env.sh
 cd ~/qnx_workspace
 
-# Clone snappy
+# Clone libdwarf-code
 git clone https://github.com/davea42/libdwarf-code.git
 git checkout v2.3.0
 
-# Build snappy
+# Build libdwarf-code
 cd ~/qnx_workspace/build-files/ports/libdwarf-code
 make install
 ```
@@ -49,7 +49,7 @@ git checkout v2.3.0
 source ~/qnx800/qnxsdp-env.sh
 cd ~/qnx_workspace
 
-# Build snappy
+# Build libdwarf-code
 cd ~/qnx_workspace/build-files/ports/libdwarf-code
 make install
 ```

@@ -5,10 +5,9 @@ include $(QCONFIG)
 
 include $(MKFILES_ROOT)/qmacros.mk
 
-NAME = lz4
+NAME=rpi_camera_ipa
 
-QNX_PROJECT_ROOT ?= $(PRODUCT_ROOT)/../../$(NAME)
-
+#where to install rpi_camera_ipa:
 #$(INSTALL_ROOT_$(OS)) is pointing to $QNX_TARGET
 #by default, unless it was manually re-routed to
 #a staging area by setting both INSTALL_ROOT_nto
@@ -21,15 +20,17 @@ INSTALL_ROOT ?= $(INSTALL_ROOT_$(OS))
 #This prefix path may be exposed to the source code,
 #the linker, or package discovery config files (.pc,
 #CMake config modules, etc.). Default is /usr/local
-PREFIX ?= usr/local
+PREFIX ?= /usr/local
 
 #choose Release or Debug
 CMAKE_BUILD_TYPE ?= Release
 
 #override 'all' target to bypass the default QNX build system
-ALL_DEPENDENCIES = $(NAME)_all
-	
-.PHONY: $(NAME)_all install check clean
+ALL_DEPENDENCIES = rpi_camera_ipa_all
+.PHONY: rpi_camera_ipa_all install check clean
+
+CFLAGS += $(FLAGS)
+LDFLAGS += -Wl,--build-id=md5
 
 include $(MKFILES_ROOT)/qtargets.mk
 
@@ -51,49 +52,36 @@ CMAKE_MODULE_PATH := $(QNX_TARGET)/$(CPUVARDIR)/$(PREFIX)/lib/cmake;$(INSTALL_RO
 #Headers from INSTALL_ROOT need to be made available by default
 #because CMake and pkg-config do not necessary add it automatically
 #if the include path is "default"
-CFLAGS += $(FLAGS) \
-          -I$(QNX_TARGET)/$(CPUVARDIR)/$(PREFIX)/include \
-          -I$(INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX)/include \
-          -D_QNX_SOURCE -D__EXT_UNIX_SOURCE -Wno-unused-parameter
-
-LDFLAGS += -Wl,--build-id=md5
-
-WITH_STATIC_LIB ?= OFF
-WITH_SHARED_LIB ?= ON
+CFLAGS += -I$(INSTALL_ROOT)/$(PREFIX)/include
 
 CMAKE_ARGS = -DCMAKE_TOOLCHAIN_FILE=$(PROJECT_ROOT)/qnx.nto.toolchain.cmake \
-             -DCMAKE_SYSTEM_PROCESSOR=$(CPU) \
-             -DCMAKE_C_FLAGS="$(CFLAGS)" \
-             -DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)" \
+             -DCMAKE_SYSTEM_PROCESSOR=$(CMAKE_SYSTEM_PROCESSOR) \
              -DCMAKE_CXX_COMPILER_TARGET=gcc_nto$(CPUVARDIR) \
-             -DCMAKE_C_COMPILER_TARGET=gcc_nto$(CPUVARDIR) \
-             -DCMAKE_INSTALL_PREFIX=$(INSTALL_ROOT) \
-             -DCMAKE_INSTALL_LIBDIR=$(CPUVARDIR)/$(PREFIX)/lib \
-             -DCMAKE_INSTALL_BINDIR=$(CPUVARDIR)/$(PREFIX)/bin \
-             -DCMAKE_INSTALL_INCLUDEDIR=$(CPUVARDIR)/$(PREFIX)/include \
-             -DCMAKE_MODULE_PATH="$(CMAKE_MODULE_PATH)" \
-             -DCMAKE_FIND_ROOT_PATH="$(CMAKE_FIND_ROOT_PATH)" \
+             -DCMAKE_INSTALL_PREFIX=$(INSTALL_ROOT)/$(CPUVARDIR)/$(PREFIX) \
+             -DCMAKE_INSTALL_INCLUDEDIR=$(INSTALL_ROOT)/$(PREFIX)/include \
              -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) \
-             -DWITH_STATIC_LIB=$(WITH_STATIC_LIB) \
-             -DWITH_SHARED_LIB=$(WITH_SHARED_LIB)
+             -DBUILD_QNX_CXX_FLAGS="$(FLAGS)" \
+             -DBUILD_QNX_LINKER_FLAGS="$(LDFLAGS)" \
+             -DCMAKE_VERBOSE_MAKEFILE=1 \
+             -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+             -DPROJECT_ROOT="$(QNX_PROJECT_ROOT)"
 
-MAKE_ARGS ?= -j $(firstword $(JLEVEL) 1)
+MAKE_ARGS ?= -j $(firstword $(JLEVEL) 4)
+
+include $(MKFILES_ROOT)/qtargets.mk
 
 ifndef NO_TARGET_OVERRIDE
-$(NAME)_all:
+rpi_camera_ipa_all:
 	@mkdir -p build
-	@cd build && cmake $(CMAKE_ARGS) $(QNX_PROJECT_ROOT)/build/cmake
-	@cd build && make VERBOSE=1 all $(MAKE_ARGS)
+	cd build && cmake $(CMAKE_ARGS) ../../
+	cd build && make all $(MAKE_ARGS) VERBOSE=1
 
-install check: $(NAME)_all
-	@echo Installing...
-	@cd build && make VERBOSE=1 install $(MAKE_ARGS)
-	@echo Done.
+install: rpi_camera_ipa_all
+	@cd build && make install $(MAKE_ARGS)
 
 clean iclean spotless:
-	rm -rf build
+	rm -fr build
 
-uninstall:
-	rm -rf $(QNX_TARGET)/$(CPUVARDIR)/$(PREFIX)/lib/liblz4*
-	rm -rf $(QNX_TARGET)/$(PREFIX)/include/lz4
+cuninstall uninstall:
+
 endif

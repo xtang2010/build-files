@@ -6,5 +6,3 @@ QRDIR=$(dir $(QCONFIG))
 endif
 endif
 include $(QRDIR)$(QRECURSE)
-
-JLEVEL ?= $(subst -j,,$(filter -j%,$(MAKEFLAGS)))
